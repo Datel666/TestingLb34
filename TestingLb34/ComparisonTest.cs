@@ -20,66 +20,48 @@ namespace TestingLb34
         }
 
         [Test]
-        public void GreaterThan1()
+        public void GreaterThan()
         {
             var versionA = new Version("1.2.3");
             var versionB = new Version("1.2.2");
             Assert.IsTrue(versionA > versionB);
-        }
 
-        [Test]
-        public void GreaterThan2()
-        {
-            var versionA = new Version("1.2.3");
-            var versionB = new Version("1.1.3");
+            versionA = new Version("1.2.3");
+            versionB = new Version("1.1.3");
+            Assert.IsTrue(versionA > versionB);
+
+            versionA = new Version("1.2.3");
+            versionB = new Version("0.2.3");
             Assert.IsTrue(versionA > versionB);
         }
 
-        [Test]
-        public void GreaterThan3()
-        {
-            var versionA = new Version("1.2.3");
-            var versionB = new Version("0.2.3");
-            Assert.IsTrue(versionA > versionB);
-        }
 
         [Test]
-        public void NotGreaterThan1()
+        public void NotGreaterThan()
         {
             var versionA = new Version("1.2.3");
             var versionB = new Version("1.2.3");
             Assert.IsFalse(versionA > versionB);
-        }
 
-        [Test]
-        public void NotGreaterThan2()
-        {
-            var versionA = new Version("1.2.3");
-            var versionB = new Version("1.2.4");
+            versionA = new Version("1.2.3");
+            versionB = new Version("1.2.4");
             Assert.IsFalse(versionA > versionB);
         }
 
+
         [Test]
-        public void GreaterThanOrEqual1()
+        public void GreaterThanOrEqual()
         {
             var versionA = new Version("1.2.3");
             var versionB = new Version("1.2.3");
             Assert.IsTrue(versionA >= versionB);
-        }
 
-        [Test]
-        public void GreaterThanOrEqual2()
-        {
-            var versionA = new Version("1.2.3");
-            var versionB = new Version("1.2.2");
+            versionA = new Version("1.2.3");
+            versionB = new Version("1.2.2");
             Assert.IsTrue(versionA >= versionB);
-        }
 
-        [Test]
-        public void GreaterThanOrEqual3()
-        {
-            var versionA = new Version("1.2.3");
-            var versionB = new Version("1.1.3");
+            versionA = new Version("1.2.3");
+            versionB = new Version("1.1.3");
             Assert.IsTrue(versionA >= versionB);
         }
 
