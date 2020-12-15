@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace SemVer
 {
-    // определяет валидные версии
+    // РѕРїСЂРµРґРµР»СЏРµС‚ РІР°Р»РёРґРЅС‹Рµ РІРµСЂСЃРёРё
     public class Range : IEquatable<Range>
     {
         private readonly ComparatorSet[] _comparatorSets;
 
         private readonly string _rangeSpec;
 
-        // новый ряд
+        // РЅРѕРІС‹Р№ СЂСЏРґ
         public Range(string rangeSpec)
         {
             _rangeSpec = rangeSpec;
@@ -25,13 +25,13 @@ namespace SemVer
             _rangeSpec = string.Join(" || ", _comparatorSets.Select(cs => cs.ToString()).ToArray());
         }
 
-        // существует ли указанная версия в ряду
+        // СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё СѓРєР°Р·Р°РЅРЅР°СЏ РІРµСЂСЃРёСЏ РІ СЂСЏРґСѓ
         public bool Contains(Version version)
         {
-            return _comparatorSets.Any(s => s.IsSatisfied(version));
+            return _comparatorSets.Any(s => s.Containss(version));
         }
 
-        // существует ли указанная версия в ряду
+        // СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё СѓРєР°Р·Р°РЅРЅР°СЏ РІРµСЂСЃРёСЏ РІ СЂСЏРґСѓ
         public bool Contains(string versionString)
         {
             try
@@ -45,25 +45,38 @@ namespace SemVer
             }
         }
 
-        // набор версий удовлетворяющий ряду
+        public bool Contains(Range versions)
+        {
+            var allIntersections = _comparatorSets.SelectMany(
+                thisCs => versions._comparatorSets.Select(thisCs.Intersect))
+                .Where(cs => cs != null).ToList();
+
+            if (allIntersections.Count >0 )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        // РЅР°Р±РѕСЂ РІРµСЂСЃРёР№ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёР№ СЂСЏРґСѓ
         public IEnumerable<Version> Contains(IEnumerable<Version> versions)
         {
             return versions.Where(Contains);
         }
 
-        // набор версий удовлетворяющий ряду
+        // РЅР°Р±РѕСЂ РІРµСЂСЃРёР№ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёР№ СЂСЏРґСѓ
         public IEnumerable<string> Contains(IEnumerable<string> versions)
         {
             return versions.Where(v => Contains(v));
         }
 
-        // максимальная версия удовлетворяющая ряду
+        // РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ РІРµСЂСЃРёСЏ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰Р°СЏ СЂСЏРґСѓ
         public Version MaxContains(IEnumerable<Version> versions)
         {
             return Contains(versions).Max();
         }
 
-        // максимальная версия удовлетворяющая ряду
+        // РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ РІРµСЂСЃРёСЏ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰Р°СЏ СЂСЏРґСѓ
         public string MaxContains(IEnumerable<string> versionStrings)
         {
             var versions = ValidVersions(versionStrings);
@@ -71,7 +84,7 @@ namespace SemVer
             return maxVersion == null ? null : maxVersion.ToString();
         }
 
-        // пересечение рядов
+        // РїРµСЂРµСЃРµС‡РµРЅРёРµ СЂСЏРґРѕРІ
         public Range Intersect(Range other)
         {
             var allIntersections = _comparatorSets.SelectMany(
@@ -85,13 +98,13 @@ namespace SemVer
             return new Range(allIntersections);
         }
 
-        // строковое представление строки
+        // СЃС‚СЂРѕРєРѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЂСЏРґР°
         public override string ToString()
         {
             return _rangeSpec;
         }
 
-        // проверка эквивалетности ряда
+        // РїСЂРѕРІРµСЂРєР° СЌРєРІРёРІР°Р»РµС‚РЅРѕСЃС‚Рё СЂСЏРґР°
         public bool Equals(Range other)
         {
             if (ReferenceEquals(other, null))
@@ -102,7 +115,7 @@ namespace SemVer
             return thisSet.SetEquals(other._comparatorSets);
         }
 
-        // ...
+        // РїРµСЂРµРіСЂСѓР·РєРё ...
         public override bool Equals(object other)
         {
             return Equals(other as Range);
@@ -152,9 +165,19 @@ namespace SemVer
         public static Range Parse(string rangeSpec)
             => new Range(rangeSpec);
 
-
         public static bool TryParse(string rangeSpec, out Range result)
-            => TryParse(rangeSpec,out result);
+        {
+            try
+            {
+                result = Parse(rangeSpec);
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
+        }
 
         private IEnumerable<Version> ValidVersions(IEnumerable<string> versionStrings)
         {
@@ -166,7 +189,7 @@ namespace SemVer
                 {
                     version = new Version(v);
                 }
-                catch (ArgumentException) { } // Skip
+                catch (ArgumentException) { } 
 
                 if (version != null)
                 {
