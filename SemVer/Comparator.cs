@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -123,7 +123,7 @@ namespace SemVer
             }
         }
 
-        public bool IsSatisfied(Version version)
+        public bool Containss(Version version)
         {
             switch(ComparatorType)
             {
