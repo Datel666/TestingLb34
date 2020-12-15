@@ -1,75 +1,31 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using SemVer;
 using System.Linq;
 
 namespace TestingLb34
 {
+    // проверки наличия в интервале конкретной версии и другого интервала: bool contains(Version) bool contains(VersionRange)
     class TildaRangeContainsTest
     {
         [Test]
-        public void TestTildaRanges1()
+        public void TestTildaRangeContainVersion()
         {
-            var comparatorA = new Comparator(">=1.2.3");
-            var comparatorB = new Comparator("<1.3.0");
-            var comparators = Interval.TildeRange("~1.2.3").Item2;
-            Assert.AreEqual(comparators.Count(), 2);
-            Assert.Contains(comparatorA, comparators);
-            Assert.Contains(comparatorB, comparators);
+            var range = new Range("~1.2.3");
+            Assert.IsTrue(range.Contains("1.2.4"));
+            Assert.IsTrue(range.Contains("1.2.9"));
+            Assert.IsFalse(range.Contains("1.1.1"));
+            Assert.IsFalse(range.Contains("1.2.2"));
+
         }
 
         [Test]
-        public void TestTildaRanges2()
+        public void TestTildaRangeContainRange()
         {
-            var comparatorA = new Comparator(">=1.2.0");
-            var comparatorB = new Comparator("<1.3.0");
-            var comparators = Interval.TildeRange("~1.2").Item2;
-            Assert.AreEqual(comparators.Count(), 2);
-            Assert.Contains(comparatorA, comparators);
-            Assert.Contains(comparatorB, comparators);
-        }
-
-        [Test]
-        public void TestTildaRanges3()
-        {
-            var comparatorA = new Comparator(">=1.0.0");
-            var comparatorB = new Comparator("<2.0.0");
-            var comparators = Interval.TildeRange("~1").Item2;
-            Assert.AreEqual(comparators.Count(), 2);
-            Assert.Contains(comparatorA, comparators);
-            Assert.Contains(comparatorB, comparators);
-        }
-
-        [Test]
-        public void TestTildaRanges4()
-        {
-            var comparatorA = new Comparator(">=0.2.3");
-            var comparatorB = new Comparator("<0.3.0");
-            var comparators = Interval.TildeRange("~0.2.3").Item2;
-            Assert.AreEqual(comparators.Count(), 2);
-            Assert.Contains(comparatorA, comparators);
-            Assert.Contains(comparatorB, comparators);
-        }
-
-        [Test]
-        public void TestTildaRanges5()
-        {
-            var comparatorA = new Comparator(">=0.2.0");
-            var comparatorB = new Comparator("<0.3.0");
-            var comparators = Interval.TildeRange("~0.2").Item2;
-            Assert.AreEqual(comparators.Count(), 2);
-            Assert.Contains(comparatorA, comparators);
-            Assert.Contains(comparatorB, comparators);
-        }
-
-        [Test]
-        public void TestTildaRanges6()
-        {
-            var comparatorA = new Comparator(">=0.0.0");
-            var comparatorB = new Comparator("<1.0.0");
-            var comparators = Interval.TildeRange("~0").Item2;
-            Assert.AreEqual(comparators.Count(), 2);
-            Assert.Contains(comparatorA, comparators);
-            Assert.Contains(comparatorB, comparators);
+            var range = new Range("~1.2.3");
+            var ContainRange = new Range(">=1.2.3 <1.3.0");
+            var NotContainRange = new Range(">=0.0.0 <1.2.3");
+            Assert.IsTrue(range.Contains(ContainRange));
+            Assert.IsFalse(range.Contains(NotContainRange));
         }
     }
 }
