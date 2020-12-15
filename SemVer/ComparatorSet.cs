@@ -56,9 +56,9 @@ namespace SemVer
             _comparators = comparators.ToList();
         }
 
-        public bool IsSatisfied(Version version)
+        public bool Containss(Version version)
         {
-            bool satisfied = _comparators.All(c => c.IsSatisfied(version));
+            bool satisfied = _comparators.All(c => c.Containss(version));
             if (version.PreRelease != null)
             {
                 return satisfied && _comparators.Any(c =>
@@ -106,11 +106,11 @@ namespace SemVer
             }
             if (equalityVersions.Count > 0)
             {
-                if (maxOfMins != null && !maxOfMins.IsSatisfied(equalityVersions[0]))
+                if (maxOfMins != null && !maxOfMins.Containss(equalityVersions[0]))
                 {
                     return null;
                 }
-                if (minOfMaxs != null && !minOfMaxs.IsSatisfied(equalityVersions[0]))
+                if (minOfMaxs != null && !minOfMaxs.Containss(equalityVersions[0]))
                 {
                     return null;
                 }
