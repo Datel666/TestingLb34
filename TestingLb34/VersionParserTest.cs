@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using SemVer;
 using System.Linq;
 
@@ -7,87 +7,70 @@ namespace TestingLb34
     class VersionParserTest
     {
         [Test]
-        public void ParseMajorVersion1()
+        public void ParseMajorVersion()
         {
             var version = new Version("1.2.3");
             Assert.AreEqual(version.Major, 1);
-        }
 
-        [Test]
-        public void ParseMajorVersion2()
-        {
-            var version = new Version(" 1.2.3 ");
+            version = new Version(" 1.2.3 ");
             Assert.AreEqual(version.Major, 1);
-        }
 
-        [Test]
-        public void ParseMajorVersion3()
-        {
-            var version = new Version(" 2.2.3-4 ");
+            version = new Version(" 2.2.3-4 ");
             Assert.AreEqual(version.Major, 2);
-        }
 
-        [Test]
-        public void ParseMajorVersion4()
-        {
-            var version = new Version(" 3.2.3-pre ");
+            version = new Version(" 3.2.3-pre ");
             Assert.AreEqual(version.Major, 3);
         }
 
+
         [Test]
-        public void ParseMinorVersion1()
+        public void ParseMinorVersion()
         {
             var version = new Version("1.2.3");
             Assert.AreEqual(version.Minor, 2);
-        }
 
-        [Test]
-        public void ParseMinorVersion2()
-        {
-            var version = new Version(" 1.2.3 ");
+            version = new Version(" 1.2.3 ");
             Assert.AreEqual(version.Minor, 2);
-        }
 
-        [Test]
-        public void ParseMinorVersion3()
-        {
-            var version = new Version(" 2.2.3-4 ");
+            version = new Version(" 3.2.3-pre ");
             Assert.AreEqual(version.Minor, 2);
-        }
 
-        [Test]
-        public void ParseMinorVersion4()
-        {
-            var version = new Version(" 3.2.3-pre ");
+            version = new Version(" 2.2.3-4 ");
             Assert.AreEqual(version.Minor, 2);
-        }
+        } 
 
         [Test]
-        public void ParsePatchVersion1()
+        public void ParsePatchVersion()
         {
             var version = new Version("1.2.3");
             Assert.AreEqual(version.Patch, 3);
-        }
 
-        [Test]
-        public void ParsePatchVersion2()
-        {
-            var version = new Version(" 1.2.3 ");
+            version = new Version(" 1.2.3 ");
+            Assert.AreEqual(version.Patch, 3);
+
+            version = new Version(" 2.2.3-4 ");
+            Assert.AreEqual(version.Patch, 3);
+
+            version = new Version(" 3.2.3-pre ");
             Assert.AreEqual(version.Patch, 3);
         }
 
+
         [Test]
-        public void ParsePatchVersion3()
+        public void BadVersion()
         {
-            var version = new Version(" 2.2.3-4 ");
-            Assert.AreEqual(version.Patch, 3);
+            var ex = Assert.Throws<System.ArgumentException>(() => new Version("Not semver"));
+            Assert.That(ex.Message, Is.EqualTo("Invalid version string: Not semver"));
+
+            ex = Assert.Throws<System.ArgumentException>(() => new Version("666"));
+            Assert.That(ex.Message, Is.EqualTo("Invalid version string: 666"));
         }
 
         [Test]
-        public void ParsePatchVersion4()
+        public void BadVersionRange()
         {
-            var version = new Version(" 3.2.3-pre ");
-            Assert.AreEqual(version.Patch, 3);
+            var success = Range.TryParse("Not semver range", out var range);
+            Assert.AreEqual(false, success);
         }
 
     }
