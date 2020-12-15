@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -94,7 +94,7 @@ namespace SemVer
         }
 
        
-        // возвращает оригинальное строковое представление экземпляра класса version или его очищенное представление, в случае если он был создан из компонентов
+        // возвращает оригинальное строковое представление экземпляра класса version 
         public override string ToString()
         {
             return _inputString ?? Clean();
@@ -115,8 +115,6 @@ namespace SemVer
         
         public override int GetHashCode()
         {
-           
-
             unchecked  
             {
                 int hash = 17;
@@ -186,7 +184,7 @@ namespace SemVer
             return Equals(other as Version);
         }
 
-        // статический вариант метода, получающего экземпляр класса version из строки
+        
         public static Version Parse(string input)
             => new Version(input);
 
