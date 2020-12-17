@@ -33,6 +33,9 @@ namespace TestingLb34
         {
             var range = new Range("~3")
             var equalRange = new Range(">=3.0.0 <4.0.0");
+            Assert.IsTrue(range.Contains("3.2.4"));
+            Assert.IsTrue(range.Contains("3.4.4"));
+            Assert.IsFalse(range.Contains("1.2.4"));
             Assert.IsTrue(range.Equals(equalRange));
             Assert.IsTrue(range == equalRange);
             Assert.IsFalse(range != equalRange);
@@ -43,6 +46,9 @@ namespace TestingLb34
         {
             var range = new Range("~3.1");
             var equalRange = new Range(">=3.1.0 <3.2.0");
+            Assert.IsTrue(range.Contains("3.1.4"));
+            Assert.IsTrue(range.Contains("3.1.6"));
+            Assert.IsFalse(range.Contains("1.2.4"));
             Assert.IsTrue(range.Equals(equalRange));
             Assert.isTrue(range == equalRange);
             Assert.IsFalse(range != equalRange);
