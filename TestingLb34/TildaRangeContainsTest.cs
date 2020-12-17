@@ -50,7 +50,7 @@ namespace TestingLb34
             Assert.IsTrue(range.Contains("3.1.6"));
             Assert.IsFalse(range.Contains("1.2.4"));
             Assert.IsTrue(range.Equals(equalRange));
-            Assert.isTrue(range == equalRange);
+            Assert.IsTrue(range == equalRange);
             Assert.IsFalse(range != equalRange);
         }
     }
