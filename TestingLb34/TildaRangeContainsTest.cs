@@ -32,7 +32,7 @@ namespace TestingLb34
         public void TestTildaRangeEqual1()
         {
             var range = new Range("~3")
-            var equalRange = new Range(">=3.0.0 <4.0.0")
+            var equalRange = new Range(">=3.0.0 <4.0.0");
             Assert.IsTrue(range.Equals(equalRange));
             Assert.IsTrue(range == equalRange);
             Assert.IsFalse(range != equalRange);
