@@ -27,5 +27,25 @@ namespace TestingLb34
             Assert.IsTrue(range.Contains(ContainRange));
             Assert.IsFalse(range.Contains(NotContainRange));
         }
+
+        [Test]
+        public void TestTildaRangeEqual1()
+        {
+            var range = new Range("~3")
+            var equalRange = new Range(">=3.0.0 <4.0.0")
+            Assert.IsTrue(range.Equals(equalRange));
+            Assert.IsTrue(range == equalRange);
+            Assert.IsFalse(range != equalRange);
+        }
+        
+        [Test]
+        public void TestTildaRangeEqual2()
+        {
+            var range = new Range("~3.1");
+            var equalRange = new Range(">=3.1.0 <3.2.0");
+            Assert.IsTrue(range.Equals(equalRange));
+            Assert.isTrue(range == equalRange);
+            Assert.IsFalse(range != equalRange);
+        }
     }
 }
