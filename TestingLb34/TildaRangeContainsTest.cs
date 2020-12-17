@@ -31,7 +31,7 @@ namespace TestingLb34
         [Test]
         public void TestTildaRangeEqual1()
         {
-            var range = new Range("~3")
+            var range = new Range("~3");
             var equalRange = new Range(">=3.0.0 <4.0.0");
             Assert.IsTrue(range.Contains("3.2.4"));
             Assert.IsTrue(range.Contains("3.4.4"));
